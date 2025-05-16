@@ -6,7 +6,8 @@
   hosts: localhost
   tasks:
     - name: debug
-      cmd: ansible-galaxy collection list
+      ansible.builtin.cmd: 
+        cmd: ansible-galaxy collection list
       register: output
     - name: output
       debug:
