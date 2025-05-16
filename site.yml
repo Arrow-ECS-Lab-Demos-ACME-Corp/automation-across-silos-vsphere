@@ -7,3 +7,7 @@
   tasks:
     - name: debug
       cmd: ansible-galaxy collection list
+      register: output
+    - name: output
+      debug:
+        var: output
