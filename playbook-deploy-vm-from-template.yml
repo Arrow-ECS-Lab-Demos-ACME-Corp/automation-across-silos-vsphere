@@ -1,7 +1,22 @@
 ---
-- name: this is just a test
+- name: Project Flow Fusion - VM Deployment
   hosts: localhost
+
+  vars:
+    vcenter_datacenter: lab
+    vcenter_validate_certs: No
+    project_code_name: flow-fusion
+
   tasks:
-    - name: ping localhost
-      ansible.builtin.setup:
+    - name: Create folder
+      community.vmware.vcenter_folder:
+        hostname: '{{ lookup("env", "VMWARE_HOST" }}'
+        username: '{{ lookup("env", "VMWARE_USER" }}'
+        password: '{{ lookup("env", "VMWARE_PASSWORD" }}'
+        validate_certs: "{{ vcenter_validate_certs }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        folder_type: vm
+        folder_name: "{{ project_code_name }}"
+        parent_folder: "lab/vm/tm/workshops/automation-across-silos"
+        state: present
 
