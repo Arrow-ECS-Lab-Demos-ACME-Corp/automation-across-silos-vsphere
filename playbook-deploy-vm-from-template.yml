@@ -34,7 +34,7 @@
         provision_vm_password: "{{ vsphere_password }}"
         provision_vm_validate_certs: False
         provision_vm_cluster: "{{ vsphere_cluster_name }}"
-        provision_vm_folder: "{{ project_code_name }}"
+        provision_vm_folder: "{{ project_folder_name }}"
         provision_vm_datacenter: "{{ vsphere_dc_name }}"
         provision_vm_datastore: "{{ vsphere_vm_datastore }}"
         provision_vm_resource_pool: "{{ vsphere_vm_resource_pool }}"
