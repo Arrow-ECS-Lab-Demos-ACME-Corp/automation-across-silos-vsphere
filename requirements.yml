@@ -3,3 +3,5 @@ collections:
   - name: community.vmware
   - name: ansible.posix
 
+roles:
+  - name: cloud.vmware_ops

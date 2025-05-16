@@ -1,16 +1,43 @@
 ---
 - name: Project Flow Fusion - VM Deployment
   hosts: localhost
+  gather_facts: true
 
   vars:
+    vsphere_username: '{{ lookup("env", "VMWARE_USER") }}'
+    vsphere_password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+    vsphere_hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+    vsphere_cluster_name: rüssel
+    vsphere_dc_name: lab
+    vsphere_vm_datastore: linux
+    vsphere_vm_resource_pool: TMarko
+    vsphere_vm_template_name: "{{ vsphere_dc_name }}/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9"
     project_code_name: flow-fusion
+    project_folder_name: "{{ vsphere_dc_name }}/vm/tm/workshops/automation-across-silos/{{ project_code_name }}"
 
   tasks:
     - name: Create folder
       vmware.vmware.folder:
-        hostname: '{{ lookup("env", "VMWARE_HOST") }}'
-        username: '{{ lookup("env", "VMWARE_USER") }}'
-        password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        hostname: "{{ vsphere_hostname }}"
+        username: "{{ vsphere_username }}"
+        password: "{{ vsphere_password }}"
         validate_certs: False
-        absolute_path: lab/vm/tm/workshops/automation-across-silos/{{ project_code_name }}
+        absolute_path: 
         state: present
+
+    - name: Provision a RHEL 9 instance from a template
+      ansible.builtin.import_role:
+        name: cloud.vmware_ops.provision_vm
+      vars:
+        provision_vm_hostname: "{{ vsphere_hostname }}"
+        provision_vm_username: "{{ vsphere_username }}"
+        provision_vm_password: "{{ vsphere_password }}"
+        provision_vm_validate_certs: False
+        provision_vm_cluster: "{{ vsphere_cluster_name }}"
+        provision_vm_folder: "{{ project_code_name }}"
+        provision_vm_datacenter: "{{ vsphere_dc_name }}"
+        provision_vm_datastore: "{{ vsphere_vm_datastore }}"
+        provision_vm_resource_pool: "{{ vsphere_vm_resource_pool }}"
+        provision_vm_name: "vm-{{ project_code_name }}-db"
+        provision_vm_template: "{{ vsphere_vm_template_name }}"
+        
