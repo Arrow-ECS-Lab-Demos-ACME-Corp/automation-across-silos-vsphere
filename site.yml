@@ -1,14 +1,4 @@
 ---
-#- name: Deploy VM from Template
-#  import_playbook: playbook-deploy-vm-from-template.yml
+- name: Deploy VM from Template
+  import_playbook: playbook-deploy-vm-from-template.yml
 
-- name: debug
-  hosts: localhost
-  tasks:
-    - name: debug
-      ansible.builtin.command: 
-        cmd: ansible-galaxy collection list
-      register: output
-    - name: output
-      debug:
-        var: output

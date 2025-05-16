@@ -9,7 +9,7 @@
 
   tasks:
     - name: Create folder
-      community.vmware.vcenter_folder:
+      vmware.vmware.vcenter_folder:
         hostname: '{{ lookup("env", "VMWARE_HOST" }}'
         username: '{{ lookup("env", "VMWARE_USER" }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD" }}'
