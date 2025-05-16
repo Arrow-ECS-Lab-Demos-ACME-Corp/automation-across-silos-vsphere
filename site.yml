@@ -1,0 +1,3 @@
+---
+- name: Deploy VM from Template
+  import_playbook: playbook-deploy-vm-from-template.yml
