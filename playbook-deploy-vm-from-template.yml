@@ -22,7 +22,7 @@
         username: "{{ vsphere_username }}"
         password: "{{ vsphere_password }}"
         validate_certs: False
-        absolute_path: 
+        absolute_path: "{{ project_folder_name }}"
         state: present
 
     - name: Provision a RHEL 9 instance from a template
