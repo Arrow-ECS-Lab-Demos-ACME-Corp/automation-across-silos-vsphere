@@ -3,8 +3,6 @@
   hosts: localhost
 
   vars:
-    vcenter_datacenter: lab
-    vcenter_validate_certs: No
     project_code_name: flow-fusion
 
   tasks:
@@ -13,10 +11,6 @@
         hostname: '{{ lookup("env", "VMWARE_HOST" }}'
         username: '{{ lookup("env", "VMWARE_USER" }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD" }}'
-        validate_certs: "{{ vcenter_validate_certs }}"
-        datacenter: "{{ vcenter_datacenter }}"
-        folder_type: vm
-        folder_name: "{{ project_code_name }}"
-        parent_folder: "lab/vm/tm/workshops/automation-across-silos"
+        validate_certs: False
+        absolute_path: "lab/vm/tm/workshops/automation-across-silos/{{ project_code_name }}"
         state: present
-
