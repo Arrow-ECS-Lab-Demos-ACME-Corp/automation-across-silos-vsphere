@@ -1,3 +1,10 @@
 ---
+- name: Install requirements
+  hosts: localhost
+  tasks:
+    - name: Installiere die benötigte Collection
+      ansible.builtin.command:
+        cmd: ansible-galaxy collection install community.vmware
+
 - name: Deploy VM from Template
   import_playbook: playbook-deploy-vm-from-template.yml
