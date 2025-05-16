@@ -12,5 +12,5 @@
         username: '{{ lookup("env", "VMWARE_USER" }}'
         password: '{{ lookup("env", "VMWARE_PASSWORD" }}'
         validate_certs: False
-        absolute_path: "lab/vm/tm/workshops/automation-across-silos/{{ project_code_name }}"
+        absolute_path: lab/vm/tm/workshops/automation-across-silos/{{ project_code_name }}
         state: present
