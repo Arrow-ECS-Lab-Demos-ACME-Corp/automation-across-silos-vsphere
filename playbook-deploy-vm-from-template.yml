@@ -54,3 +54,5 @@
             - "172.27.55.12"
           dns_suffix:
             - "tm.gmias"
+        provision_vm_state: poweredon
+        
