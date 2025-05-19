@@ -4,6 +4,9 @@
   gather_facts: true
 
   vars:
+    project_code_name: flow-fusion
+    project_state: present
+
     vsphere_username: '{{ lookup("env", "VMWARE_USER") }}'
     vsphere_password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
     vsphere_hostname: '{{ lookup("env", "VMWARE_HOST") }}'
@@ -12,8 +15,7 @@
     vsphere_vm_datastore: linux
     vsphere_vm_resource_pool: TMarko
     vsphere_vm_template_name: "{{ vsphere_dc_name }}/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9"
-    project_code_name: flow-fusion
-    project_folder_name: "{{ vsphere_dc_name }}/vm/tm/workshops/automation-across-silos/{{ project_code_name }}"
+    vsphere_vm_folder_name: "{{ vsphere_dc_name }}/vm/tm/workshops/automation-across-silos/{{ project_code_name }}"
     vm_network_portgroup: "internal-tm-545"
     vm_network_ip: "192.168.150.10"
     vm_network_mask: "255.255.255.0"
@@ -31,8 +33,8 @@
         username: "{{ vsphere_username }}"
         password: "{{ vsphere_password }}"
         validate_certs: False
-        absolute_path: "{{ project_folder_name }}"
-        state: present
+        absolute_path: "{{ vsphere_ vsphere_vm_folder_name }}"
+        state: "{{ project_state }}"
 
     - name: Provision a RHEL 9 instance from a template
       ansible.builtin.import_role:

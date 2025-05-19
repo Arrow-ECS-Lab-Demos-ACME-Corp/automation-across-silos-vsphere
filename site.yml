@@ -1,4 +1,4 @@
 ---
-- name: Deploy VM from Template
-  import_playbook: playbook-deploy-vm-from-template.yml
-
+- name: Import Flow-Fusion Project Playbooks
+  import_playbook: projects/flow-fusion/vsphere.yml
+ 
