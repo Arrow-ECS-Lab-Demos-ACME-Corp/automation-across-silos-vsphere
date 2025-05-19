@@ -14,6 +14,15 @@
     vsphere_vm_template_name: "{{ vsphere_dc_name }}/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9"
     project_code_name: flow-fusion
     project_folder_name: "{{ vsphere_dc_name }}/vm/tm/workshops/automation-across-silos/{{ project_code_name }}"
+    vm_network_portgroup: "internal-tm-545"
+    vm_network_ip: "192.168.150.10"
+    vm_network_mask: "255.255.255.0"
+    vm_network_gateway: "192.168.150.1"
+    vm_network_dns:
+      - "172.27.55.11"
+      - "172.27.55.12"
+    vm_network_dns_suffix:
+      - "tm.gmias"
 
   tasks:
     - name: Create folder
@@ -38,21 +47,18 @@
         provision_vm_datacenter: "{{ vsphere_dc_name }}"
         provision_vm_datastore: "{{ vsphere_vm_datastore }}"
         provision_vm_resource_pool: "{{ vsphere_vm_resource_pool }}"
-        provision_vm_name: "vm-{{ project_code_name }}-db"
+        provision_vm_name: "tm-demo-vm-{{ project_code_name }}-db"
         provision_vm_template: "{{ vsphere_vm_template_name }}"
         provision_vm_networks:
-          - name: "internal-tm-545"
+          - name: "{{ vm_network_portgroup }}"
             type: static
-            ip: "192.168.150.10"
-            netmask: "255.255.255.0"
-            gateway: "192.168.150.10"
+            ip: "{{ vm_network_ip }}"
+            netmask: "{{ vm_network_mask }}"
+            gateway: "{{ vm_network_gateway }}"
             connected: True
         provision_vm_customization:
           hostname: "vm-{{ project_code_name }}-db"
-          dns_servers:
-            - "172.27.55.11"
-            - "172.27.55.12"
-          dns_suffix:
-            - "tm.gmias"
+          dns_servers: "{{ vm_network_dns }}"
+          dns_suffix: "{{ vm_network_dns_suffix }}"
         provision_vm_state: poweredon
         
