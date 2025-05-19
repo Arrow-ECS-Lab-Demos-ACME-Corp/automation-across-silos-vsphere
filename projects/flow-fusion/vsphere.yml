@@ -33,7 +33,7 @@
         username: "{{ vsphere_username }}"
         password: "{{ vsphere_password }}"
         validate_certs: False
-        absolute_path: "{{ vsphere_ vsphere_vm_folder_name }}"
+        absolute_path: "{{ vsphere_vm_folder_name }}"
         state: "{{ project_state }}"
 
     - name: Provision a RHEL 9 instance from a template
@@ -45,7 +45,7 @@
         provision_vm_password: "{{ vsphere_password }}"
         provision_vm_validate_certs: False
         provision_vm_cluster: "{{ vsphere_cluster_name }}"
-        provision_vm_folder: "{{ project_folder_name }}"
+        provision_vm_folder: "{{ vsphere_vm_folder_name }}"
         provision_vm_datacenter: "{{ vsphere_dc_name }}"
         provision_vm_datastore: "{{ vsphere_vm_datastore }}"
         provision_vm_resource_pool: "{{ vsphere_vm_resource_pool }}"
