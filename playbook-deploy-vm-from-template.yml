@@ -40,4 +40,6 @@
         provision_vm_resource_pool: "{{ vsphere_vm_resource_pool }}"
         provision_vm_name: "vm-{{ project_code_name }}-db"
         provision_vm_template: "{{ vsphere_vm_template_name }}"
+        provision_vm_customization:
+          hostname: "vm-{{ project_code_name }}-db"
         
