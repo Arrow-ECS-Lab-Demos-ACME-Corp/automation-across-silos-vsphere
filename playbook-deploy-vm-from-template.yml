@@ -40,6 +40,17 @@
         provision_vm_resource_pool: "{{ vsphere_vm_resource_pool }}"
         provision_vm_name: "vm-{{ project_code_name }}-db"
         provision_vm_template: "{{ vsphere_vm_template_name }}"
+        provision_vm_networks:
+          - name: "internal-tm-545"
+            type: static
+            ip: "192.168.150.10"
+            netmask: "255.255.255.0"
+            gateway: "192.168.150.10"
+            connected: True
         provision_vm_customization:
           hostname: "vm-{{ project_code_name }}-db"
-        
+          dns_servers:
+            - "172.27.55.11"
+            - "172.27.55.12"
+          dns_suffix:
+            - "tm.gmias"
