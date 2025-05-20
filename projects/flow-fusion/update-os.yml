@@ -4,6 +4,7 @@
     - rhel8_64Guest
     - rhel9_64Guest
   gather_facts: true
+  become: true
 
   vars: []
 
