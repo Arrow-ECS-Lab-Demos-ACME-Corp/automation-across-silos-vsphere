@@ -1,0 +1,16 @@
+---
+- name: Project Flow Fusion - Update OS
+  hosts: 
+    - rhel8_64Guest
+    - rhel9_64Guest
+  gather_facts: true
+
+  vars: []
+
+  tasks:
+
+    - name: Update all packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: updated
+        
