@@ -12,5 +12,5 @@
     - name: Update all packages
       ansible.builtin.dnf:
         name: "*"
-        state: updated
+        state: latest
         
