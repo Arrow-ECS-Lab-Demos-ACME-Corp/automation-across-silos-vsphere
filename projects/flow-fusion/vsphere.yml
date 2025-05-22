@@ -7,26 +7,79 @@
     project_code_name: flow-fusion
     project_state: present
 
-    vsphere_username: '{{ lookup("env", "VMWARE_USER") }}'
-    vsphere_password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-    vsphere_hostname: '{{ lookup("env", "VMWARE_HOST") }}'
-    vsphere_cluster_name: rüssel
-    vsphere_dc_name: lab
-    vsphere_vm_datastore: linux
-    vsphere_vm_resource_pool: TMarko
-    vsphere_vm_template_name: "{{ vsphere_dc_name }}/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9"
-    vsphere_vm_folder_name: "{{ vsphere_dc_name }}/vm/tm/workshops/automation-across-silos/{{ project_code_name }}"
-    vm_network_portgroup: "internal-tm-545"
-    vm_network_ip: "192.168.150.10"
-    vm_network_mask: "255.255.255.0"
-    vm_network_gateway: "192.168.150.1"
-    vm_network_dns:
-      - "172.27.55.11"
-      - "172.27.55.12"
-    vm_network_dns_suffix:
-      - "tm.gmias"
+    vsphere_data:
+      stage:
+        vsphere_username: '{{ lookup("env", "VMWARE_USER") }}'
+        vsphere_password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        vsphere_hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        vsphere_cluster_name: rüssel
+        vsphere_dc_name: lab
+        vsphere_vm_datastore: linux
+        vsphere_vm_resource_pool: TMarko
+        vsphere_vm_template_name: "lab/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9-20250521"
+        vsphere_vm_folder_name: "lab/vm/tm/workshops/automation-across-silos/{{ project_code_name }}/{{ deploy_env }}"
+        vm_name: "[{{ deploy_env }}] tm-demo-vm-{{ project_code_name }}-db"
+        vm_network_portgroup: "internal-tm-545"
+        vm_network_ip: "192.168.150.10"
+        vm_network_mask: "255.255.255.0"
+        vm_network_gateway: "192.168.150.1"
+        vm_network_dns:
+          - "172.27.55.11"
+          - "172.27.55.12"
+        vm_network_dns_suffix:
+          - "tm.gmias"
+      prod:
+        vsphere_username: '{{ lookup("env", "VMWARE_USER") }}'
+        vsphere_password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        vsphere_hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        vsphere_cluster_name: rüssel
+        vsphere_dc_name: lab
+        vsphere_vm_datastore: linux
+        vsphere_vm_resource_pool: TMarko
+        vsphere_vm_template_name: "lab/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9-20250521"
+        vsphere_vm_folder_name: "lab/vm/tm/workshops/automation-across-silos/{{ project_code_name }}/{{ deploy_env }}"
+        vm_name: "[{{ deploy_env }}] tm-demo-vm-{{ project_code_name }}-db"
+        vm_network_portgroup: "internal-tm-545"
+        vm_network_ip: "192.168.150.20"
+        vm_network_mask: "255.255.255.0"
+        vm_network_gateway: "192.168.150.1"
+        vm_network_dns:
+          - "172.27.55.11"
+          - "172.27.55.12"
+        vm_network_dns_suffix:
+          - "tm.gmias"
+      
+    vsphere_username: '{{ vsphere_data[deploy_env]["vsphere_username"] }}'
+    vsphere_password: '{{ vsphere_data[deploy_env]["vsphere_password"] }}'
+    vsphere_hostname: '{{ vsphere_data[deploy_env]["vsphere_hostname"] }}'
+    vsphere_cluster_name: '{{ vsphere_data[deploy_env]["vsphere_cluster_name"] }}'
+    vsphere_dc_name: '{{ vsphere_data[deploy_env]["vsphere_dc_name"] }}'
+    vsphere_vm_datastore: '{{ vsphere_data[deploy_env]["vsphere_vm_datastore"] }}'
+    vsphere_vm_resource_pool: '{{ vsphere_data[deploy_env]["vsphere_vm_resource_pool"] }}'
+    vsphere_vm_template_name: '{{ vsphere_data[deploy_env]["vsphere_vm_template_name"] }}'
+    vsphere_vm_folder_name: '{{ vsphere_data[deploy_env]["vsphere_vm_folder_name"] }}'
+    vm_name: '{{ vsphere_data[deploy_env]["vm_name"] }}'
+    vm_network_portgroup: '{{ vsphere_data[deploy_env]["vm_network_portgroup"] }}'
+    vm_network_ip: '{{ vsphere_data[deploy_env]["vm_network_ip"] }}'
+    vm_network_mask: '{{ vsphere_data[deploy_env]["vm_network_mask"] }}'
+    vm_network_gateway: '{{ vsphere_data[deploy_env]["vm_network_gateway"] }}'
+    vm_network_dns: '{{ vsphere_data[deploy_env]["vm_network_dns"] }}'
+    vm_network_dns_suffix: '{{ vsphere_data[deploy_env]["vm_network_dns_suffix"] }}'
 
   tasks:
+
+    - name: Delete the VM
+      vmware_guest:
+        hostname: "{{ vsphere_hostname }}"
+        username: "{{ vsphere_username }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: false
+        name: "{{ vm_name }}"
+        force: true
+        state: absent
+      delegate_to: localhost
+      when: project_state == 'absent'
+
     - name: Create folder
       vmware.vmware.folder:
         hostname: "{{ vsphere_hostname }}"
@@ -49,7 +102,7 @@
         provision_vm_datacenter: "{{ vsphere_dc_name }}"
         provision_vm_datastore: "{{ vsphere_vm_datastore }}"
         provision_vm_resource_pool: "{{ vsphere_vm_resource_pool }}"
-        provision_vm_name: "tm-demo-vm-{{ project_code_name }}-db"
+        provision_vm_name: "{{ vm_name }}"
         provision_vm_template: "{{ vsphere_vm_template_name }}"
         provision_vm_networks:
           - name: "{{ vm_network_portgroup }}"
@@ -62,5 +115,7 @@
           hostname: "vm-{{ project_code_name }}-db"
           dns_servers: "{{ vm_network_dns }}"
           dns_suffix: "{{ vm_network_dns_suffix }}"
-        provision_vm_state: poweredon
-        
+        provision_vm_state: "poweredon"
+        provision_vm_wait_for_ip_address: true
+        provision_vm_wait_for_ip_address_timeout: 600
+      when: project_state == 'present'
