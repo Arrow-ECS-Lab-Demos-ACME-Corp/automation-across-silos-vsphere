@@ -16,8 +16,8 @@
         vsphere_dc_name: lab
         vsphere_vm_datastore: linux
         vsphere_vm_resource_pool: TMarko
-        vsphere_vm_template_name: "{{ vsphere_dc_name }}/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9-20250521"
-        vsphere_vm_folder_name: "{{ vsphere_dc_name }}/vm/tm/workshops/automation-across-silos/{{ project_code_name }}/{{ deploy_env }}"
+        vsphere_vm_template_name: "lab/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9-20250521"
+        vsphere_vm_folder_name: "lab/vm/tm/workshops/automation-across-silos/{{ project_code_name }}/{{ deploy_env }}"
         vm_name: "[{{ deploy_env }}] tm-demo-vm-{{ project_code_name }}-db"
         vm_network_portgroup: "internal-tm-545"
         vm_network_ip: "192.168.150.10"
@@ -36,8 +36,8 @@
         vsphere_dc_name: lab
         vsphere_vm_datastore: linux
         vsphere_vm_resource_pool: TMarko
-        vsphere_vm_template_name: "{{ vsphere_dc_name }}/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9-20250521"
-        vsphere_vm_folder_name: "{{ vsphere_dc_name }}/vm/tm/workshops/automation-across-silos/{{ project_code_name }}/{{ deploy_env }}"
+        vsphere_vm_template_name: "lab/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9-20250521"
+        vsphere_vm_folder_name: "lab/vm/tm/workshops/automation-across-silos/{{ project_code_name }}/{{ deploy_env }}"
         vm_name: "[{{ deploy_env }}] tm-demo-vm-{{ project_code_name }}-db"
         vm_network_portgroup: "internal-tm-545"
         vm_network_ip: "192.168.150.20"
