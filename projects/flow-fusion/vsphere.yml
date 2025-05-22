@@ -7,34 +7,57 @@
     project_code_name: flow-fusion
     project_state: present
 
-    vsphere_username: '{{ lookup("env", "VMWARE_USER") }}'
-    vsphere_password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
-    vsphere_hostname: '{{ lookup("env", "VMWARE_HOST") }}'
-    vsphere_cluster_name: rüssel
-    vsphere_dc_name: lab
-    vsphere_vm_datastore: linux
-    vsphere_vm_resource_pool: TMarko
-    vsphere_vm_template_name: "{{ vsphere_dc_name }}/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9-20250521"
-    vsphere_vm_folder_name: "{{ vsphere_dc_name }}/vm/tm/workshops/automation-across-silos/{{ project_code_name }}"
-    vm_network_portgroup: "internal-tm-545"
-    vm_network_ip: "192.168.150.10"
-    vm_network_mask: "255.255.255.0"
-    vm_network_gateway: "192.168.150.1"
-    vm_network_dns:
-      - "172.27.55.11"
-      - "172.27.55.12"
-    vm_network_dns_suffix:
-      - "tm.gmias"
+    vsphere_data:
+      stage:
+        vsphere_username: '{{ lookup("env", "VMWARE_USER") }}'
+        vsphere_password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        vsphere_hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        vsphere_cluster_name: rüssel
+        vsphere_dc_name: lab
+        vsphere_vm_datastore: linux
+        vsphere_vm_resource_pool: TMarko
+        vsphere_vm_template_name: "{{ vsphere_dc_name }}/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9-20250521"
+        vsphere_vm_folder_name: "{{ vsphere_dc_name }}/vm/tm/workshops/automation-across-silos/{{ deploy_env }}/{{ project_code_name }}-{{ deploy_env }}"
+        vm_name: "[{{ deploy_env }}] tm-demo-vm-{{ project_code_name }}-db"
+        vm_network_portgroup: "internal-tm-545"
+        vm_network_ip: "192.168.150.10"
+        vm_network_mask: "255.255.255.0"
+        vm_network_gateway: "192.168.150.1"
+        vm_network_dns:
+          - "172.27.55.11"
+          - "172.27.55.12"
+        vm_network_dns_suffix:
+          - "tm.gmias"
+      prod:
+        vsphere_username: '{{ lookup("env", "VMWARE_USER") }}'
+        vsphere_password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+        vsphere_hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+        vsphere_cluster_name: rüssel
+        vsphere_dc_name: lab
+        vsphere_vm_datastore: linux
+        vsphere_vm_resource_pool: TMarko
+        vsphere_vm_template_name: "{{ vsphere_dc_name }}/vm/tm/_templates/os/linux/rhel/tm-vm-4-4-100-rhel9-20250521"
+        vsphere_vm_folder_name: "{{ vsphere_dc_name }}/vm/tm/workshops/automation-across-silos/{{ deploy_env }}/{{ project_code_name }}-{{ deploy_env }}"
+        vm_name: "[{{ deploy_env }}] tm-demo-vm-{{ project_code_name }}-db"
+        vm_network_portgroup: "internal-tm-545"
+        vm_network_ip: "192.168.150.20"
+        vm_network_mask: "255.255.255.0"
+        vm_network_gateway: "192.168.150.1"
+        vm_network_dns:
+          - "172.27.55.11"
+          - "172.27.55.12"
+        vm_network_dns_suffix:
+          - "tm.gmias"
 
   tasks:
 
     - name: Delete the VM
       vmware_guest:
-        hostname: "{{ vsphere_hostname }}"
-        username: "{{ vsphere_username }}"
-        password: "{{ vsphere_password }}"
+        hostname: "{{ db_data[deploy_env]['vsphere_hostname'] }}"
+        username: "{{ db_data[deploy_env]['vsphere_username'] }}"
+        password: "{{ db_data[deploy_env]['vsphere_password'] }}"
         validate_certs: false
-        name: "tm-demo-vm-{{ project_code_name }}-db"
+        name: "tm-demo-vm-{{ project_code_name }}-{{  }}-db"
         force: true
         state: absent
       delegate_to: localhost
@@ -42,41 +65,40 @@
 
     - name: Create folder
       vmware.vmware.folder:
-        hostname: "{{ vsphere_hostname }}"
-        username: "{{ vsphere_username }}"
-        password: "{{ vsphere_password }}"
+        hostname: "{{ db_data[deploy_env]['vsphere_hostname'] }}"
+        username: "{{ db_data[deploy_env]['vsphere_username'] }}"
+        password: "{{ db_data[deploy_env]['vsphere_password'] }}"
         validate_certs: False
-        absolute_path: "{{ vsphere_vm_folder_name }}"
+        absolute_path: "{{ db_data[deploy_env]['vsphere_vm_folder_name'] }}"
         state: "{{ project_state }}"
 
     - name: Provision a RHEL 9 instance from a template
       ansible.builtin.import_role:
         name: cloud.vmware_ops.provision_vm
       vars:
-        provision_vm_hostname: "{{ vsphere_hostname }}"
-        provision_vm_username: "{{ vsphere_username }}"
-        provision_vm_password: "{{ vsphere_password }}"
+        provision_vm_hostname: "{{ db_data[deploy_env]['vsphere_hostname'] }}"
+        provision_vm_username: "{{ db_data[deploy_env]['vsphere_username'] }}"
+        provision_vm_password: "{{ db_data[deploy_env]['vsphere_password'] }}"
         provision_vm_validate_certs: False
-        provision_vm_cluster: "{{ vsphere_cluster_name }}"
-        provision_vm_folder: "{{ vsphere_vm_folder_name }}"
-        provision_vm_datacenter: "{{ vsphere_dc_name }}"
-        provision_vm_datastore: "{{ vsphere_vm_datastore }}"
-        provision_vm_resource_pool: "{{ vsphere_vm_resource_pool }}"
-        provision_vm_name: "tm-demo-vm-{{ project_code_name }}-db"
-        provision_vm_template: "{{ vsphere_vm_template_name }}"
+        provision_vm_cluster: "{{ db_data[deploy_env]['vsphere_cluster_name'] }}"
+        provision_vm_folder: "{{ db_data[deploy_env]['vsphere_vm_folder_name'] }}"
+        provision_vm_datacenter: "{{ db_data[deploy_env]['vsphere_dc_name'] }}"
+        provision_vm_datastore: "{{ db_data[deploy_env]['vsphere_vm_datastore'] }}"
+        provision_vm_resource_pool: "{{ db_data[deploy_env]['vsphere_vm_resource_pool'] }}"
+        provision_vm_name: "{{ db_data[deploy_env]['vm_name'] }}"
+        provision_vm_template: "{{ db_data[deploy_env]['vsphere_vm_template_name'] }}"
         provision_vm_networks:
-          - name: "{{ vm_network_portgroup }}"
+          - name: "{{ db_data[deploy_env]['vm_network_portgroup'] }}"
             type: static
-            ip: "{{ vm_network_ip }}"
-            netmask: "{{ vm_network_mask }}"
-            gateway: "{{ vm_network_gateway }}"
+            ip: "{{ db_data[deploy_env]['vm_network_ip'] }}"
+            netmask: "{{ db_data[deploy_env]['vm_network_mask'] }}"
+            gateway: "{{ db_data[deploy_env]['vm_network_gateway'] }}"
             connected: True
         provision_vm_customization:
           hostname: "vm-{{ project_code_name }}-db"
-          dns_servers: "{{ vm_network_dns }}"
-          dns_suffix: "{{ vm_network_dns_suffix }}"
+          dns_servers: "{{ db_data[deploy_env]['vm_network_dns'] }}"
+          dns_suffix: "{{ db_data[deploy_env]['vm_network_dns_suffix'] }}"
         provision_vm_state: "poweredon"
         provision_vm_wait_for_ip_address: true
         provision_vm_wait_for_ip_address_timeout: 600
       when: project_state == 'present'
-        
