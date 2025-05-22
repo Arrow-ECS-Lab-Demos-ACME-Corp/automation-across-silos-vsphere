@@ -1,5 +1,3 @@
 ---
 - name: Import Flow-Fusion Project Playbooks - Deploy VM
   import_playbook: projects/flow-fusion/vsphere.yml
-- name: Import Flow-Fusion Project Playbooks - Update OS
-  import_playbook: projects/flow-fusion/update-os.yml
