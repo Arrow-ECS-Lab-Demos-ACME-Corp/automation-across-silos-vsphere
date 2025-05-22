@@ -53,9 +53,9 @@
 
     - name: Delete the VM
       vmware_guest:
-        hostname: "{{ db_data[deploy_env]['vsphere_hostname'] }}"
-        username: "{{ db_data[deploy_env]['vsphere_username'] }}"
-        password: "{{ db_data[deploy_env]['vsphere_password'] }}"
+        hostname: "{{ vsphere_data[deploy_env]['vsphere_hostname'] }}"
+        username: "{{ vsphere_data[deploy_env]['vsphere_username'] }}"
+        password: "{{ vsphere_data[deploy_env]['vsphere_password'] }}"
         validate_certs: false
         name: "tm-demo-vm-{{ project_code_name }}-{{  }}-db"
         force: true
@@ -65,39 +65,39 @@
 
     - name: Create folder
       vmware.vmware.folder:
-        hostname: "{{ db_data[deploy_env]['vsphere_hostname'] }}"
-        username: "{{ db_data[deploy_env]['vsphere_username'] }}"
-        password: "{{ db_data[deploy_env]['vsphere_password'] }}"
+        hostname: "{{ vsphere_data[deploy_env]['vsphere_hostname'] }}"
+        username: "{{ vsphere_data[deploy_env]['vsphere_username'] }}"
+        password: "{{ vsphere_data[deploy_env]['vsphere_password'] }}"
         validate_certs: False
-        absolute_path: "{{ db_data[deploy_env]['vsphere_vm_folder_name'] }}"
+        absolute_path: "{{ vsphere_data[deploy_env]['vsphere_vm_folder_name'] }}"
         state: "{{ project_state }}"
 
     - name: Provision a RHEL 9 instance from a template
       ansible.builtin.import_role:
         name: cloud.vmware_ops.provision_vm
       vars:
-        provision_vm_hostname: "{{ db_data[deploy_env]['vsphere_hostname'] }}"
-        provision_vm_username: "{{ db_data[deploy_env]['vsphere_username'] }}"
-        provision_vm_password: "{{ db_data[deploy_env]['vsphere_password'] }}"
+        provision_vm_hostname: "{{ vsphere_data[deploy_env]['vsphere_hostname'] }}"
+        provision_vm_username: "{{ vsphere_data[deploy_env]['vsphere_username'] }}"
+        provision_vm_password: "{{ vsphere_data[deploy_env]['vsphere_password'] }}"
         provision_vm_validate_certs: False
-        provision_vm_cluster: "{{ db_data[deploy_env]['vsphere_cluster_name'] }}"
-        provision_vm_folder: "{{ db_data[deploy_env]['vsphere_vm_folder_name'] }}"
-        provision_vm_datacenter: "{{ db_data[deploy_env]['vsphere_dc_name'] }}"
-        provision_vm_datastore: "{{ db_data[deploy_env]['vsphere_vm_datastore'] }}"
-        provision_vm_resource_pool: "{{ db_data[deploy_env]['vsphere_vm_resource_pool'] }}"
-        provision_vm_name: "{{ db_data[deploy_env]['vm_name'] }}"
-        provision_vm_template: "{{ db_data[deploy_env]['vsphere_vm_template_name'] }}"
+        provision_vm_cluster: "{{ vsphere_data[deploy_env]['vsphere_cluster_name'] }}"
+        provision_vm_folder: "{{ vsphere_data[deploy_env]['vsphere_vm_folder_name'] }}"
+        provision_vm_datacenter: "{{ vsphere_data[deploy_env]['vsphere_dc_name'] }}"
+        provision_vm_datastore: "{{ vsphere_data[deploy_env]['vsphere_vm_datastore'] }}"
+        provision_vm_resource_pool: "{{ vsphere_data[deploy_env]['vsphere_vm_resource_pool'] }}"
+        provision_vm_name: "{{ vsphere_data[deploy_env]['vm_name'] }}"
+        provision_vm_template: "{{ vsphere_data[deploy_env]['vsphere_vm_template_name'] }}"
         provision_vm_networks:
-          - name: "{{ db_data[deploy_env]['vm_network_portgroup'] }}"
+          - name: "{{ vsphere_data[deploy_env]['vm_network_portgroup'] }}"
             type: static
-            ip: "{{ db_data[deploy_env]['vm_network_ip'] }}"
-            netmask: "{{ db_data[deploy_env]['vm_network_mask'] }}"
-            gateway: "{{ db_data[deploy_env]['vm_network_gateway'] }}"
+            ip: "{{ vsphere_data[deploy_env]['vm_network_ip'] }}"
+            netmask: "{{ vsphere_data[deploy_env]['vm_network_mask'] }}"
+            gateway: "{{ vsphere_data[deploy_env]['vm_network_gateway'] }}"
             connected: True
         provision_vm_customization:
           hostname: "vm-{{ project_code_name }}-db"
-          dns_servers: "{{ db_data[deploy_env]['vm_network_dns'] }}"
-          dns_suffix: "{{ db_data[deploy_env]['vm_network_dns_suffix'] }}"
+          dns_servers: "{{ vsphere_data[deploy_env]['vm_network_dns'] }}"
+          dns_suffix: "{{ vsphere_data[deploy_env]['vm_network_dns_suffix'] }}"
         provision_vm_state: "poweredon"
         provision_vm_wait_for_ip_address: true
         provision_vm_wait_for_ip_address_timeout: 600
