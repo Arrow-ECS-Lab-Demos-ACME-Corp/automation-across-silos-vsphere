@@ -1,8 +1,6 @@
 ---
 - name: Project Flow Fusion - Register and Update OS
-  hosts: 
-    - rhel8_64Guest
-    - rhel9_64Guest
+  hosts: poweredon
   gather_facts: true
   become: true
 
@@ -23,7 +21,8 @@
       remediation: absent
 
   roles:
-    - redhat.rhel_system_roles.rhc
+    - name: redhat.rhel_system_roles.rhc
+      when: ansible_facts['distribution'] == "RedHat"
 
   tasks:
 
@@ -31,4 +30,5 @@
       ansible.builtin.dnf:
         name: "*"
         state: latest
+      when: ansible_facts['os_family'] == "RedHat"
         
