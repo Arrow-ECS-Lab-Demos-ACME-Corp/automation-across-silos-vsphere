@@ -27,6 +27,18 @@
       - "tm.gmias"
 
   tasks:
+
+    - name: Delete the VM
+      vmware_guest:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: false
+        name: "tm-demo-vm-{{ project_code_name }}-db"
+        state: absent
+      delegate_to: localhost
+      when: "{{ project_state == 'absent' }}"
+
     - name: Create folder
       vmware.vmware.folder:
         hostname: "{{ vsphere_hostname }}"
@@ -62,5 +74,6 @@
           hostname: "vm-{{ project_code_name }}-db"
           dns_servers: "{{ vm_network_dns }}"
           dns_suffix: "{{ vm_network_dns_suffix }}"
-        provision_vm_state: "{{ 'poweredon' if project_state == 'present' else 'absent' }}"
+        provision_vm_state: "poweredon"
+        when: "{{ project_state != 'absent' }}"
         
