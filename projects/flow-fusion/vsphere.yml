@@ -68,14 +68,6 @@
 
   tasks:
 
-    - name: debug vsphere_data
-      debug: 
-        var: vsphere_data
-
-    - name: debug vsphere_hostname
-      debug:
-        var: vsphere_hostname
-
     - name: Delete the VM
       vmware_guest:
         hostname: "{{ vsphere_hostname }}"
