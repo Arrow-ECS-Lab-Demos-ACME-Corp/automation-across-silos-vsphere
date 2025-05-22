@@ -30,9 +30,9 @@
 
     - name: Delete the VM
       vmware_guest:
-        hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_username }}"
-        password: "{{ vcenter_password }}"
+        hostname: "{{ vsphere_hostname }}"
+        username: "{{ vsphere_username }}"
+        password: "{{ vsphere_password }}"
         validate_certs: false
         name: "tm-demo-vm-{{ project_code_name }}-db"
         state: absent
