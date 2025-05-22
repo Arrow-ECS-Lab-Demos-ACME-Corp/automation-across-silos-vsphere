@@ -76,5 +76,5 @@
           dns_servers: "{{ vm_network_dns }}"
           dns_suffix: "{{ vm_network_dns_suffix }}"
         provision_vm_state: "poweredon"
-        when: project_state != 'absent'
+        when: project_state == 'present'
         
