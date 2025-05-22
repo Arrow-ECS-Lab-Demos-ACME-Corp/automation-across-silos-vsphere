@@ -49,22 +49,22 @@
         vm_network_dns_suffix:
           - "tm.gmias"
       
-      vsphere_username: '{{ vsphere_data[deploy_env]["vsphere_username"] }}'
-      vsphere_password: '{{ vsphere_data[deploy_env]["vsphere_password"] }}'
-      vsphere_hostname: '{{ vsphere_data[deploy_env]["vsphere_hostname"] }}'
-      vsphere_cluster_name: '{{ vsphere_data[deploy_env]["vsphere_cluster_name"] }}'
-      vsphere_dc_name: '{{ vsphere_data[deploy_env]["vsphere_dc_name"] }}'
-      vsphere_vm_datastore: '{{ vsphere_data[deploy_env]["vsphere_vm_datastore"] }}'
-      vsphere_vm_resource_pool: '{{ vsphere_data[deploy_env]["vsphere_vm_resource_pool"] }}'
-      vsphere_vm_template_name: '{{ vsphere_data[deploy_env]["vsphere_vm_template_name"] }}'
-      vsphere_vm_folder_name: '{{ vsphere_data[deploy_env]["vsphere_vm_folder_name"] }}'
-      vm_name: '{{ vsphere_data[deploy_env]["vm_name"] }}'
-      vm_network_portgroup: '{{ vsphere_data[deploy_env]["vm_network_portgroup"] }}'
-      vm_network_ip: '{{ vsphere_data[deploy_env]["vm_network_ip"] }}'
-      vm_network_mask: '{{ vsphere_data[deploy_env]["vm_network_mask"] }}'
-      vm_network_gateway: '{{ vsphere_data[deploy_env]["vm_network_gateway"] }}'
-      vm_network_dns: '{{ vsphere_data[deploy_env]["vm_network_dns"] }}'
-      vm_network_dns_suffix: '{{ vsphere_data[deploy_env]["vm_network_dns_suffix"] }}'
+    vsphere_username: '{{ vsphere_data[deploy_env]["vsphere_username"] }}'
+    vsphere_password: '{{ vsphere_data[deploy_env]["vsphere_password"] }}'
+    vsphere_hostname: '{{ vsphere_data[deploy_env]["vsphere_hostname"] }}'
+    vsphere_cluster_name: '{{ vsphere_data[deploy_env]["vsphere_cluster_name"] }}'
+    vsphere_dc_name: '{{ vsphere_data[deploy_env]["vsphere_dc_name"] }}'
+    vsphere_vm_datastore: '{{ vsphere_data[deploy_env]["vsphere_vm_datastore"] }}'
+    vsphere_vm_resource_pool: '{{ vsphere_data[deploy_env]["vsphere_vm_resource_pool"] }}'
+    vsphere_vm_template_name: '{{ vsphere_data[deploy_env]["vsphere_vm_template_name"] }}'
+    vsphere_vm_folder_name: '{{ vsphere_data[deploy_env]["vsphere_vm_folder_name"] }}'
+    vm_name: '{{ vsphere_data[deploy_env]["vm_name"] }}'
+    vm_network_portgroup: '{{ vsphere_data[deploy_env]["vm_network_portgroup"] }}'
+    vm_network_ip: '{{ vsphere_data[deploy_env]["vm_network_ip"] }}'
+    vm_network_mask: '{{ vsphere_data[deploy_env]["vm_network_mask"] }}'
+    vm_network_gateway: '{{ vsphere_data[deploy_env]["vm_network_gateway"] }}'
+    vm_network_dns: '{{ vsphere_data[deploy_env]["vm_network_dns"] }}'
+    vm_network_dns_suffix: '{{ vsphere_data[deploy_env]["vm_network_dns_suffix"] }}'
 
   tasks:
 
