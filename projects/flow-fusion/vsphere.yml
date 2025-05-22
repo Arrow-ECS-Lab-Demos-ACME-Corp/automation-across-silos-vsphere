@@ -35,6 +35,7 @@
         password: "{{ vsphere_password }}"
         validate_certs: false
         name: "tm-demo-vm-{{ project_code_name }}-db"
+        force: true
         state: absent
       delegate_to: localhost
       when: project_state == 'absent'
